@@ -7,41 +7,26 @@
 :root {
   /* dark (default theme) */
   --sf-canvas: #141a24;
-  --sf-export-bg: #141a24; /* solid background for PNG / SVG downloads */
   --sf-panel: var(--card-bg, #2d3848);
   --sf-line: var(--card-border, #3c4a5f);
   --sf-muted: var(--card-foot, #b7c4d6);
   --sf-strong: var(--card-strong, white);
-  --sf-seed: #d9c19a;
-  --sf-seed-hi: #fff3d6;
   --sf-gold: #ffb74d;
   --sf-gold-deep: #e08a00;
-  --sf-arm-a: #51eaff;
-  --sf-arm-b: #d16eff;
   --sf-mono: "Overpass Mono", ui-monospace, Menlo, monospace;
 }
 html[data-theme="light"] {
   --sf-canvas: #ffffff;
-  --sf-export-bg: #ffffff;
   --sf-panel: #f4f6f9;
-  --sf-seed: #3a2a18;
-  --sf-seed-hi: #8a6238;
   --sf-gold: #e0a526;
   --sf-gold-deep: #a86f0c;
-  --sf-arm-a: #1f7a80;
-  --sf-arm-b: #c0512b;
 }
 html[data-theme="evol-blue"] {
   --sf-canvas: rgba(1, 60, 110, 0.35);
-  --sf-export-bg: #0277bd;
   --sf-panel: rgba(255, 255, 255, 0.12);
   --sf-line: rgba(255, 255, 255, 0.35);
-  --sf-seed: #fff3d6;
-  --sf-seed-hi: #ffffff;
   --sf-gold: #ffb74d;
   --sf-gold-deep: #e08a00;
-  --sf-arm-a: #1a212d;
-  --sf-arm-b: #ffeb3b;
 }
 
 .content {
@@ -73,6 +58,18 @@ html[data-theme="evol-blue"] {
   border-radius: 10px;
   overflow: hidden;
 }
+.canvas-box[data-bg="dark"] {
+  background: #1a212d;
+}
+.canvas-box[data-bg="light"] {
+  background: #fbf6ea;
+}
+/* transparent: a checkerboard so it reads as "no background" */
+.canvas-box.clear {
+  background-color: var(--sf-canvas);
+  background-image: conic-gradient(rgba(128, 128, 128, 0.14) 25%, transparent 0 50%, rgba(128, 128, 128, 0.14) 0 75%, transparent 0);
+  background-size: 24px 24px;
+}
 .canvas-box canvas {
   display: block;
   width: 100%;
@@ -84,7 +81,7 @@ html[data-theme="evol-blue"] {
   bottom: 10px;
   font-family: var(--sf-mono);
   font-size: 12px;
-  color: var(--sf-muted);
+  color: #9aa3b2;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }
@@ -137,6 +134,9 @@ html[data-theme="evol-blue"] {
   gap: 8px;
 }
 
+.ctl > .ctl-label + .chips + .ctl-label {
+  margin-top: 6px;
+}
 .chips {
   display: flex;
   flex-wrap: wrap;

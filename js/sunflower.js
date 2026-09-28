@@ -5,6 +5,20 @@
   (c) 2026 Olivier Giulieri
 */
 
+// Same color schemes and backgrounds as golden-ratio's Sunflower tab.
+// Seeds shade from h0 at the center to h1 at the rim.
+const PALETTES = [
+  { id: "sun", label: "Sun", h0: 48, h1: 8 },
+  { id: "sea", label: "Sea", h0: 190, h1: 260 },
+  { id: "forest", label: "Forest", h0: 70, h1: 150 },
+  { id: "rose", label: "Rose", h0: 340, h1: 290 },
+];
+const BGS = [
+  { id: "dark", label: "Dark", bg: "#1a212d", accent: "#ffa500" },
+  { id: "light", label: "Light", bg: "#fbf6ea", accent: "#c26200" },
+  { id: "clear", label: "Transparent", bg: null, accent: "#ffa500" },
+];
+
 function initSunflower() {
   const GOLDEN = 360 * (1 - 1 / ((1 + Math.sqrt(5)) / 2)); // 137.50776…
   const canvas = document.getElementById('flower');
@@ -21,10 +35,23 @@ function initSunflower() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let arm = 0;
+  const look = { palette: "sun", bg: "dark" };
+  try {
+    Object.assign(look, JSON.parse(localStorage.getItem("sunflower-settings") || "{}"));
+  } catch (e) {}
+  const saveLook = () => {
+    try { localStorage.setItem("sunflower-settings", JSON.stringify(look)); } catch (e) {}
+  };
+  const pal = () => PALETTES.find(p => p.id === look.palette) || PALETTES[0];
+  const bgOf = () => BGS.find(b => b.id === look.bg) || BGS[0];
+  const hue = t => { const p = pal(); return p.h0 + (p.h1 - p.h0) * t; };
+  // seed color, as in golden-ratio: hue by distance, slight odd/even shimmer
+  const seedColor = (t, i) => {
+    const l = bgOf().id === "light" ? 42 : 58;
+    return `hsl(${hue(t).toFixed(0)} 78% ${l + (i % 2 ? 4 : -2)}%)`;
+  };
   let shown = null; // number of seeds drawn during growth animation
   let anim = null;
-
-  function css(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
   function resize(){
     const r = canvas.getBoundingClientRect();
@@ -64,7 +91,10 @@ function initSunflower() {
 
     // petals: two staggered rings around the grown part of the head
     if (petals){
-      const gold = css('--sf-gold'), deep = css('--sf-gold-deep');
+      const light = bgOf().id === 'light';
+      const h0 = pal().h0;
+      const gold = `hsl(${h0} 85% ${light ? 50 : 58}%)`;
+      const deep = `hsl(${(h0 - 12 + 360) % 360} 75% ${light ? 38 : 44}%)`;
       const grownR = c * Math.sqrt(n);
       const k = 34;
       for (let ring = 0; ring < 2; ring++){
@@ -81,8 +111,7 @@ function initSunflower() {
       }
     }
 
-    const seed = css('--sf-seed'), hi = css('--sf-seed-hi');
-    const armA = css('--sf-arm-a'), armB = css('--sf-arm-b');
+    const accent = bgOf().accent;
     const dot = Math.max(0.8, c * 0.46);
     // order the k arms around the head so neighbouring arms alternate colour
     const armColor = {};
@@ -98,13 +127,12 @@ function initSunflower() {
     for (let i = 1; i <= n; i++){
       const r = c * Math.sqrt(i);
       const t = i * rad;
-      let fill = seed, alpha = 1;
+      let fill = seedColor(i / N, i), alpha = 1;
       if (arm){
+        // every other arm stays lit, the rest fade; one arm in the accent color
         const k = armColor[i % arm];
-        fill = k === 2 ? armB : (k === 1 ? armA : seed);
-        alpha = k === 0 ? 0.3 : 1;
-      } else if (i / n > 0.985){
-        fill = hi;
+        if (k === 2) fill = accent;
+        alpha = k === 0 ? 0.22 : 1;
       }
       out.seeds.push({ x: cx + r * Math.cos(t), y: cy + r * Math.sin(t), r: dot, fill, alpha });
     }
@@ -113,8 +141,10 @@ function initSunflower() {
 
   function paint(g, w, h, sc, bg){
     g.clearRect(0, 0, w, h);
-    g.fillStyle = bg;
-    g.fillRect(0, 0, w, h);
+    if (bg){
+      g.fillStyle = bg;
+      g.fillRect(0, 0, w, h);
+    }
     for (const p of sc.petals){
       g.globalAlpha = p.alpha;
       g.fillStyle = p.fill;
@@ -140,7 +170,7 @@ function initSunflower() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     const N = parseInt(countIn.value, 10);
     const n = shown == null ? N : Math.min(N, shown);
-    paint(ctx, w, h, scene(w, h, n, N), css('--sf-canvas'));
+    paint(ctx, w, h, scene(w, h, n, N), bgOf().bg);
     readout.textContent = `n = ${n}   θ = ${parseFloat(angleIn.value).toFixed(3)}°   r = c·√n`;
   }
 
@@ -158,14 +188,14 @@ function initSunflower() {
 
   function fileName(){
     const a = parseFloat(angleIn.value).toFixed(3).replace('.', '_');
-    return `sunflower-${a}-${countIn.value}` + (arm ? `-arms${arm}` : '');
+    return `sunflower-${a}-${countIn.value}-${look.palette}` + (arm ? `-arms${arm}` : '');
   }
 
   function exportPNG(){
     const size = 2000, N = parseInt(countIn.value, 10);
     const c = document.createElement('canvas');
     c.width = c.height = size;
-    paint(c.getContext('2d'), size, size, scene(size, size, N, N), css('--sf-export-bg'));
+    paint(c.getContext('2d'), size, size, scene(size, size, N, N), bgOf().bg);
     c.toBlob(b => download(b, fileName() + '.png'));
   }
 
@@ -176,7 +206,7 @@ function initSunflower() {
     const op = a => a < 1 ? ` fill-opacity="${a}"` : '';
     let out = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
     out += `<title>Sunflower, ${parseFloat(angleIn.value).toFixed(3)}° divergence angle, ${N} seeds</title>`;
-    out += `<rect width="${size}" height="${size}" fill="${css('--sf-export-bg')}"/>`;
+    if (bgOf().bg) out += `<rect width="${size}" height="${size}" fill="${bgOf().bg}"/>`;
     for (const p of sc.petals){
       out += `<ellipse cx="0" cy="0" rx="${f(p.rx)}" ry="${f(p.ry)}" fill="${p.fill}"${op(p.alpha)} transform="translate(${f(p.x)} ${f(p.y)}) rotate(${f(p.rot * 180 / Math.PI)})"/>`;
     }
@@ -185,6 +215,13 @@ function initSunflower() {
     }
     out += '</svg>';
     download(new Blob([out], { type: 'image/svg+xml' }), fileName() + '.svg');
+  }
+
+  function renderLook(){
+    document.querySelectorAll('#palettes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pal === look.palette ? 'true' : 'false'));
+    document.querySelectorAll('#backgrounds button').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === look.bg ? 'true' : 'false'));
+    canvas.parentElement.classList.toggle('clear', !bgOf().bg);
+    canvas.parentElement.dataset.bg = look.bg;
   }
 
   function sync(){
@@ -202,6 +239,8 @@ function initSunflower() {
   petalsIn.addEventListener('change', draw);
   presetBtns.forEach(b => b.addEventListener('click', () => { angleIn.value = b.dataset.a; sync(); }));
   armBtns.forEach(b => b.addEventListener('click', () => { arm = parseInt(b.dataset.k, 10); sync(); }));
+  document.querySelectorAll('#palettes button').forEach(b => b.addEventListener('click', () => { look.palette = b.dataset.pal; saveLook(); renderLook(); draw(); }));
+  document.querySelectorAll('#backgrounds button').forEach(b => b.addEventListener('click', () => { look.bg = b.dataset.bg; saveLook(); renderLook(); draw(); }));
 
   document.getElementById('export-png').addEventListener('click', exportPNG);
   document.getElementById('export-svg').addEventListener('click', exportSVG);
@@ -228,6 +267,7 @@ function initSunflower() {
 
   angleIn.value = GOLDEN.toFixed(5);
   presetBtns[0].dataset.a = GOLDEN.toFixed(5);
+  renderLook();
   sync();
   resize();
 }
