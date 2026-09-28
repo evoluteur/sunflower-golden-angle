@@ -28,6 +28,8 @@ Plain HTML, CSS and JavaScript, with no dependencies and no build step. Just ope
 
 Sunflower-Golden-Angle is open source at [GitHub](https://github.com/evoluteur/sunflower-golden-angle) with MIT license.
 
+Had fun browsing the app? [Buy me a coffee by becoming a sponsor](https://github.com/sponsors/evoluteur).
+
 You may also be interested in my other projects [Mandala Maker](https://github.com/evoluteur/mandala-maker), [Cymatics](https://github.com/evoluteur/cymatics) and [Sacred Geometry](https://github.com/evoluteur/sacred-geometry). See them all on [Esoterica](https://evoluteur.github.io/esoterica.html).
 
 Copyright (c) 2026 [Olivier Giulieri](https://evoluteur.github.io/).
