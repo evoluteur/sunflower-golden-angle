@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-063933E3C2");
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunflower Golden Angle</title>
+    <meta
+      name="description"
+      content="Grow a sunflower seed head from the golden angle, nudge the angle and watch it fall apart, and count its Fibonacci spirals."
+    />
+    <meta name="author" content="Olivier Giulieri" />
+    <link
+      rel="canonical"
+      href="https://evoluteur.github.io/sunflower-golden-angle/"
+    />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta name="theme-color" content="#1a212d" />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Overpass:wght@300;400;600&family=Overpass+Mono&display=swap"
+    />
+    <link id="omg-core-css" rel="stylesheet" href="css/core.css" />
+    <link id="omg-theme-css" rel="stylesheet" href="css/themes/dark/dark.css" />
+    <link id="omg-density-css" rel="stylesheet" href="css/densities.css" />
+    <link rel="stylesheet" href="css/overrides.css" />
+    <link rel="stylesheet" href="css/sunflower.css" />
+
+    <script src="js/omg.js"></script>
+    <script src="js/sunflower.js"></script>
+  </head>
+
+  <body
+    onload="
+      setupPage('home');
+      initSunflower();
+    "
+    id="omg-body"
+  >
+    <div id="omg-header">
+      <h1>Sunflower Golden Angle</h1>
+      <div id="omg-header-tools">
+        <div id="omg-theme-picker"></div>
+        <a
+          id="omg-github"
+          href="https://github.com/evoluteur/sunflower-golden-angle"
+          target="_blank"
+          rel="noopener"
+          title="Sunflower Golden Angle on GitHub"
+          aria-label="Sunflower Golden Angle on GitHub"
+          ><svg viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            /></svg
+        ></a>
+      </div>
+    </div>
+    <h2>137.508&deg; and the spirals it grows</h2>
+    <div class="content">
+      <p class="tagline">
+        Seed <i>n</i> sits at angle <i>n</i> &times; <i>&theta;</i> and at a
+        distance &radic;<i>n</i> from the center. With <i>&theta;</i> set to the
+        golden angle the seeds pack evenly. Nudge it by a tenth of a degree and
+        the pattern collapses into spokes.
+      </p>
+
+      <div class="layout">
+        <div class="canvas-box">
+          <canvas
+            id="flower"
+            aria-label="Sunflower seed head drawn from the golden angle"
+          ></canvas>
+          <div class="readout" id="readout"></div>
+        </div>
+
+        <div class="side">
+          <div class="ctl">
+            <div class="ctl-head">
+              <label class="ctl-label" for="angle">Divergence angle</label>
+              <span class="val" id="angleVal"></span>
+            </div>
+            <input
+              type="range"
+              id="angle"
+              min="130"
+              max="145"
+              step="0.001"
+              value="137.508"
+            />
+            <div class="chips" id="presets">
+              <button data-a="137.50776">137.508° golden</button>
+              <button data-a="137.3">137.3°</button>
+              <button data-a="137.6">137.6°</button>
+              <button data-a="138.4615">360·5/13</button>
+              <button data-a="135">135° (3/8)</button>
+              <button data-a="141.4214">100·√2</button>
+            </div>
+            <p class="note" id="note"></p>
+          </div>
+
+          <div class="ctl">
+            <div class="ctl-head">
+              <label class="ctl-label" for="count">Seeds</label>
+              <span class="val" id="countVal"></span>
+            </div>
+            <input
+              type="range"
+              id="count"
+              min="50"
+              max="2500"
+              step="1"
+              value="1200"
+            />
+          </div>
+
+          <div class="ctl">
+            <span class="ctl-label">Highlight spiral arms (same n mod k)</span>
+            <div class="chips" id="arms">
+              <button data-k="0">None</button>
+              <button data-k="13">13</button>
+              <button data-k="21">21</button>
+              <button data-k="34">34</button>
+              <button data-k="55">55</button>
+              <button data-k="89">89</button>
+            </div>
+          </div>
+
+          <div class="ctl">
+            <label class="opt"
+              ><input type="checkbox" id="petals" checked /> Draw petals</label
+            >
+            <button id="grow">Grow it</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="explain">
+        <div>
+          <h3>Why 137.5°</h3>
+          <p>
+            The golden angle is <code>360° × (1 − 1/φ)</code>, where φ ≈ 1.618.
+            φ is the hardest number to approximate with fractions, so no two
+            seeds ever line up on the same ray and gaps get filled as they
+            appear.
+          </p>
+        </div>
+        <div>
+          <h3>Counting spirals</h3>
+          <p>
+            The spirals you see are parastichies: seeds whose index differs by a
+            Fibonacci number. Near the center 21 and 34 dominate, farther out 34
+            and 55, then 55 and 89. Try highlighting each one.
+          </p>
+        </div>
+        <div>
+          <h3>Not a fractal</h3>
+          <p>
+            Every seed is the same size and density is uniform across the disc,
+            so there is no detail at smaller scales. The self-similarity is in
+            the spiral counts, which climb the Fibonacci sequence as you move
+            outward.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>
+          Sunflower Golden Angle is open source on
+          <a href="https://github.com/evoluteur/sunflower-golden-angle"
+            >GitHub</a
+          >
+          with an MIT license.
+        </p>
+        <p>
+          Had fun browsing the app?
+          <a href="https://github.com/sponsors/evoluteur"
+            >Buy me a coffee by becoming a sponsor</a
+          >.
+        </p>
+        <p>
+          You may also like
+          <a href="https://evoluteur.github.io/mandala-maker/">Mandala Maker</a
+          >, <a href="https://evoluteur.github.io/cymatics/">Cymatics</a>, and
+          <a href="https://evoluteur.github.io/sacred-geometry/"
+            >Sacred Geometry</a
+          >. For more mystic arts as small web apps, see
+          <a href="https://evoluteur.github.io/esoterica.html">Esoterica</a>.
+        </p>
+        <p class="copyright">
+          &#169; 2026
+          <a href="https://evoluteur.github.io/">Olivier Giulieri</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

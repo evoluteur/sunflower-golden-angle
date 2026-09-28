@@ -1,0 +1,205 @@
+/*
+  sunflower-golden-angle app styles.
+  Colors come from the variables below, set per omg theme
+  (html[data-theme] is set by setTheme in omg.js). The canvas reads them too.
+*/
+
+:root {
+  /* dark (default theme) */
+  --sf-canvas: #141a24;
+  --sf-panel: var(--card-bg, #2d3848);
+  --sf-line: var(--card-border, #3c4a5f);
+  --sf-muted: var(--card-foot, #b7c4d6);
+  --sf-strong: var(--card-strong, white);
+  --sf-seed: #d9c19a;
+  --sf-seed-hi: #fff3d6;
+  --sf-gold: #ffb74d;
+  --sf-gold-deep: #e08a00;
+  --sf-arm-a: #51eaff;
+  --sf-arm-b: #d16eff;
+  --sf-mono: "Overpass Mono", ui-monospace, Menlo, monospace;
+}
+html[data-theme="light"] {
+  --sf-canvas: #ffffff;
+  --sf-panel: #f4f6f9;
+  --sf-seed: #3a2a18;
+  --sf-seed-hi: #8a6238;
+  --sf-gold: #e0a526;
+  --sf-gold-deep: #a86f0c;
+  --sf-arm-a: #1f7a80;
+  --sf-arm-b: #c0512b;
+}
+html[data-theme="evol-blue"] {
+  --sf-canvas: rgba(1, 60, 110, 0.35);
+  --sf-panel: rgba(255, 255, 255, 0.12);
+  --sf-line: rgba(255, 255, 255, 0.35);
+  --sf-seed: #fff3d6;
+  --sf-seed-hi: #ffffff;
+  --sf-gold: #ffb74d;
+  --sf-gold-deep: #e08a00;
+  --sf-arm-a: #1a212d;
+  --sf-arm-b: #ffeb3b;
+}
+
+.content {
+  max-width: 1120px;
+}
+.tagline {
+  max-width: 62ch;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.canvas-box {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--sf-canvas);
+  border: 1px solid var(--sf-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.canvas-box canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.readout {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  font-family: var(--sf-mono);
+  font-size: 12px;
+  color: var(--sf-muted);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.ctl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ctl-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.ctl-label {
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sf-muted);
+}
+.val {
+  font-family: var(--sf-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--sf-strong);
+}
+
+.side input[type="range"] {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--sf-gold);
+}
+.side input[type="checkbox"] {
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--sf-gold);
+}
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chips button {
+  margin: 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: var(--sf-mono);
+  font-size: 0.72em;
+  color: var(--sf-strong);
+  background: var(--sf-panel);
+  border: 1px solid var(--sf-line);
+}
+.chips button:hover,
+.chips button:focus {
+  background: var(--sf-panel);
+  border-color: var(--sf-gold);
+}
+.chips button[aria-pressed="true"] {
+  background: var(--sf-gold);
+  border-color: var(--sf-gold);
+  color: #1a212d;
+}
+.side button:focus-visible,
+.side input:focus-visible {
+  outline: 2px solid var(--sf-gold);
+  outline-offset: 2px;
+}
+#grow {
+  margin: 0;
+  align-self: flex-start;
+}
+
+.note {
+  font-size: 0.85em;
+  background: var(--sf-panel);
+  border: 1px solid var(--sf-line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-height: 5em;
+  margin: 0;
+}
+
+.explain {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin-top: 40px;
+}
+@media (max-width: 820px) {
+  .explain {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+.explain h3 {
+  margin: 0 0 6px;
+}
+.explain p {
+  margin: 0;
+  color: var(--sf-muted);
+}
+.explain code {
+  font-family: var(--sf-mono);
+  font-size: 0.9em;
+  color: var(--sf-strong);
+}

@@ -1,0 +1,54 @@
+/*
+  sunflower-golden-angle customizations on top of the shared omg-themes styles.
+  core.css, densities.css, the themes and omg.js are synced from omg-themes
+  (npm run sync:themes), so don't edit them here: add overrides below.
+  Per-theme rules use html[data-theme="..."] (set by setTheme in omg.js).
+*/
+
+/* the light theme has no heading color of its own */
+:where(html[data-theme="light"]) h2,
+:where(html[data-theme="light"]) h3 {
+  color: #1a212d;
+}
+
+/* Theme toggle with the GitHub link below it, anchored top right
+   (core.css normally anchors #omg-theme-picker there directly). */
+#omg-header-tools {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+#omg-header-tools #omg-theme-picker {
+  position: static;
+}
+
+/* GitHub link, same look as the theme toggle's icons */
+#omg-github {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-right: 2px;
+  border-radius: 50%;
+  opacity: 0.75;
+}
+#omg-github svg {
+  width: 20px; /* same size in every theme (the themes' generic svg rule differs) */
+  height: 20px;
+}
+:where(html[data-theme="light"]) #omg-github svg {
+  fill: #1a212d;
+}
+html[data-theme="evol-blue"] #omg-github svg {
+  fill: white; /* like the theme toggle icons on the blue background */
+}
+#omg-github:hover,
+#omg-github:focus-visible {
+  opacity: 1;
+}

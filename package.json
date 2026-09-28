@@ -1,0 +1,26 @@
+{
+  "name": "sunflower-golden-angle",
+  "version": "0.1.0",
+  "description": "Grow a sunflower seed head from the golden angle, nudge the angle and watch it fall apart, and count its Fibonacci spirals.",
+  "repository": "github:evoluteur/sunflower-golden-angle",
+  "homepage": "https://evoluteur.github.io/sunflower-golden-angle/",
+  "copyright": "(c) 2026 Olivier Giulieri",
+  "author": "Olivier Giulieri (https://evoluteur.github.io/)",
+  "license": "MIT",
+  "keywords": [
+    "sunflower",
+    "golden-angle",
+    "golden-ratio",
+    "phyllotaxis",
+    "fibonacci",
+    "fermat-spiral",
+    "parastichy",
+    "vogel",
+    "math",
+    "canvas",
+    "javascript"
+  ],
+  "scripts": {
+    "sync:themes": "sh scripts/sync-omg-themes.sh"
+  }
+}
