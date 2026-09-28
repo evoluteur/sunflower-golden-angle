@@ -7,6 +7,7 @@
 :root {
   /* dark (default theme) */
   --sf-canvas: #141a24;
+  --sf-export-bg: #141a24; /* solid background for PNG / SVG downloads */
   --sf-panel: var(--card-bg, #2d3848);
   --sf-line: var(--card-border, #3c4a5f);
   --sf-muted: var(--card-foot, #b7c4d6);
@@ -21,6 +22,7 @@
 }
 html[data-theme="light"] {
   --sf-canvas: #ffffff;
+  --sf-export-bg: #ffffff;
   --sf-panel: #f4f6f9;
   --sf-seed: #3a2a18;
   --sf-seed-hi: #8a6238;
@@ -31,6 +33,7 @@ html[data-theme="light"] {
 }
 html[data-theme="evol-blue"] {
   --sf-canvas: rgba(1, 60, 110, 0.35);
+  --sf-export-bg: #0277bd;
   --sf-panel: rgba(255, 255, 255, 0.12);
   --sf-line: rgba(255, 255, 255, 0.35);
   --sf-seed: #fff3d6;
@@ -202,4 +205,24 @@ html[data-theme="evol-blue"] {
   font-family: var(--sf-mono);
   font-size: 0.9em;
   color: var(--sf-strong);
+}
+
+/* Save buttons: PNG in the theme's button style, SVG as an outline */
+.btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btns button {
+  margin: 0;
+}
+.btns button.ghost {
+  background-color: transparent;
+  color: inherit;
+  border: 2px solid var(--sf-line);
+}
+.btns button.ghost:hover,
+.btns button.ghost:focus {
+  background-color: var(--sf-panel);
+  border-color: var(--sf-gold);
 }
