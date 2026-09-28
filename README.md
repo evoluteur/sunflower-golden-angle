@@ -2,6 +2,10 @@
 
 Grow a sunflower seed head from the golden angle in your browser. Nudge the angle by a tenth of a degree and watch the even packing fall apart into spokes, then highlight the Fibonacci spirals and count them. No sign-up and no libraries.
 
+- [Grow a sunflower](https://evoluteur.github.io/sunflower-golden-angle/)
+
+![Sunflower Golden Angle](sunflower-golden-angle.png)
+
 ## What it does
 
 Seed *n* is placed at angle *n* × θ and at a distance √*n* from the center (Vogel's model). With θ set to the golden angle, 360° × (1 − 1/φ) ≈ 137.508°, the seeds fill the disc evenly.

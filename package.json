@@ -18,7 +18,9 @@
     "vogel",
     "math",
     "canvas",
-    "javascript"
+    "javascript",
+    "svg",
+    "png"
   ],
   "scripts": {
     "sync:themes": "sh scripts/sync-omg-themes.sh"
