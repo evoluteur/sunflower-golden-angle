@@ -11,7 +11,7 @@
   color: #1a212d;
 }
 
-/* Theme toggle with the GitHub link below it, anchored top right
+/* Theme toggle + GitHub link as one row, anchored top right
    (core.css normally anchors #omg-theme-picker there directly). */
 #omg-header-tools {
   position: absolute;
@@ -19,9 +19,8 @@
   right: 5px;
   z-index: 200;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+  align-items: center;
+  gap: 20px;
 }
 #omg-header-tools #omg-theme-picker {
   position: static;
@@ -51,4 +50,14 @@ html[data-theme="evol-blue"] #omg-github svg {
 #omg-github:hover,
 #omg-github:focus-visible {
   opacity: 1;
+}
+
+/* keep the title clear of the theme toggle and GitHub link on phones */
+@media only screen and (max-width: 560px) {
+  #omg-header h1 {
+    padding-right: 165px;
+    font-size: 1.4rem;
+    white-space: normal;
+    overflow: visible;
+  }
 }
